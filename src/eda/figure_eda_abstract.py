@@ -3,14 +3,15 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from sklearn.pipeline import Pipeline
 
 
 class FigureEdaAbstract(ABC):
-    def __init__(self, data: pd.DataFrame):
+    def __init__(self, data: pd.DataFrame, pipeline: Pipeline, is_processed: bool = False):
         self.__CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
         self.__PATH = os.path.join(self.__CURRENT_PATH, 'result')
 
-        self.__data = data
+        self.__data = data if is_processed else pipeline.fit_transform(data)
 
     def to_figure(self):
         self.generate(self.__data)

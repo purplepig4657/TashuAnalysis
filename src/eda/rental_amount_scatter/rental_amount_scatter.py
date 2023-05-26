@@ -1,19 +1,26 @@
-import os
-
 import pandas as pd
+from sklearn.pipeline import Pipeline
 
 from src.eda.figure_eda_abstract import FigureEdaAbstract
+from src.transform.transformer.column_renamer import ColumnRenamer
+from src.transform.transformer.location_column_extender import LocationColumnExtender
+from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
 
 
 class RentalAmountScatter(FigureEdaAbstract):
     """
-    It is needless figure, but just example how to write eda.
+    It is needless figure, but just example show how to write eda.
     """
 
-    def __init__(self, data: pd.DataFrame):
-        super().__init__(data)
-        self.__FILE_PATH = os.path.dirname(os.path.abspath(__file__))
+    def __init__(self, data: pd.DataFrame, is_processed: bool = False):
+        self.__pipeline = Pipeline([
+            ('renamer', ColumnRenamer()),
+            ('str2datatime', StringToDatetimeConverter()),
+            ('location_extender', LocationColumnExtender(only_rent_location=True))
+        ])
+
+        super().__init__(data=data, pipeline=self.__pipeline, is_processed=is_processed)
 
     def generate(self, data: pd.DataFrame):
-        data.plot(kind='scatter', x='rent_longitude', y='rent_latitude',
-                  s=data['distance'] / 25, c='distance', figsize=(10, 7), alpha=0.1)
+        data.plot(kind='scatter', x='rent_longitude', y='rent_latitude', s=data['distance'] / 25,
+                  c='distance', figsize=(10, 7), alpha=0.1)
