@@ -4,12 +4,12 @@ import pandas as pd
 
 
 class DataLoader:
-    def __init__(self, data_information: dict = None):
+    def __init__(self, rent_data_information: dict = None, station_data_information: dict = None):
         self.__FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         self.__DATA_DIRECTORY = os.path.join(self.__FILE_PATH, "data")
-        self.__STATION_DATA = "location_of_public_bicycle_in_daejeon_20200801"
+        self.__STATION_DATA = "location_of_public_bicycle_in_daejeon"
 
-        self.__data_information = {
+        self.__rent_data_information = {
             "2022_2": (2022, 2, None),
             "2022_1": (2022, 1, None),
             "2021": (2021, None, None),
@@ -18,42 +18,63 @@ class DataLoader:
             "2018": (2018, None, None),
             "2017": (2017, None, None),
             "2016": (2016, None, 'cp949')
-        } if data_information is None else data_information
+        } if rent_data_information is None else rent_data_information
 
-        self.__all_data = self.load_all_data()
-        self.__station_data = self.__load_station_data(encoding='cp949')
+        self.__station_data_information = {
+            "2023": (2023, None),
+            "2021": (2021, None),
+            "2020": (2020, 'cp949')
+        } if station_data_information is None else station_data_information
 
-    def __load_data(self, year: int, season: int = None, encoding: str = None) -> pd.DataFrame:
+        self.__all_rent_data = self.__load_all_rent_data()
+        self.__all_station_data = self.__load_all_station_data()
+
+    def __load_rent_data(self, year: int, season: int = None, encoding: str = None) -> pd.DataFrame:
         file_name = (f"{year}_{season}" if season is not None else str(year)) + ".csv"
         csv_file = os.path.join(self.__DATA_DIRECTORY, file_name)
         data = pd.read_csv(csv_file, encoding=encoding)
         return data
 
-    def __load_station_data(self, encoding: str = None) -> pd.DataFrame:
-        file_name = f"{self.__STATION_DATA}.csv"
+    def __load_station_data(self, year: int, encoding: str = None) -> pd.DataFrame:
+        file_name = f"{self.__STATION_DATA}_{year}.csv"
         csv_file = os.path.join(self.__DATA_DIRECTORY, file_name)
         data = pd.read_csv(csv_file, encoding=encoding)
         return data
 
-    def load_all_data(self) -> dict:
+    def __load_all_rent_data(self) -> dict:
         result = dict()
-        for key, value in self.__data_information.items():
-            result[key] = self.__load_data(*value)
+        for key, value in self.__rent_data_information.items():
+            result[key] = self.__load_rent_data(*value)
         return result
 
-    def get_specific_data(self, name: str) -> pd.DataFrame:
-        if name not in self.__all_data.keys():
-            raise NameError(f"Name {name} is not in all_data.")
-        return self.all_data[name]
+    def __load_all_station_data(self) -> dict:
+        result = dict()
+        for key, value in self.__station_data_information.items():
+            result[key] = self.__load_station_data(*value)
+        return result
+
+    def get_specific_rent_data(self, name: str) -> pd.DataFrame:
+        if name not in self.__all_rent_data.keys():
+            raise NameError(f"Name {name} is not in all_rent_data.")
+        return self.all_rent_data[name]
+
+    def get_specific_station_data(self, name: str) -> pd.DataFrame:
+        if name not in self.__all_station_data.keys():
+            raise NameError(f"Name {name} is not in all_station_data.")
+        return self.all_station_data[name]
 
     @property
-    def available_data_list(self) -> list:
-        return list(self.__data_information.keys())
+    def available_rent_data_list(self) -> list:
+        return list(self.__rent_data_information.keys())
 
     @property
-    def all_data(self) -> dict:
-        return self.__all_data
+    def available_station_data_list(self) -> list:
+        return list(self.__station_data_information.keys())
 
     @property
-    def station_data(self) -> pd.DataFrame:
-        return self.__station_data
+    def all_rent_data(self) -> dict:
+        return self.__all_rent_data
+
+    @property
+    def all_station_data(self) -> dict:
+        return self.__all_station_data
