@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 class FigureEdaAbstract(ABC):
     def __init__(self, data: pd.DataFrame):
         self.__CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-        self.__PATH = os.path.join('result', self.__CURRENT_PATH)
+        self.__PATH = os.path.join(self.__CURRENT_PATH, 'result')
 
         self.__data = data
 
