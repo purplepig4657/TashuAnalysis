@@ -19,5 +19,4 @@ processed_data = pipline.fit_transform(data)
 
 rental_amount_scatter = RentalAmountScatter(processed_data)
 
-rental_amount_scatter.generate()
-rental_amount_scatter.to_file()
+rental_amount_scatter.generate_save(figure_name="rental_amount_scatter")
