@@ -10,7 +10,7 @@ class LocationColumnExtender(BaseEstimator, TransformerMixin):
     depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`
     """
 
-    def __init__(self, year: str, only_rent_location: bool = False, data_loader: DataLoader = None):
+    def __init__(self, year: str = "2021", only_rent_location: bool = False, data_loader: DataLoader = None):
         self.__data_loader = DataLoader() if data_loader is None else data_loader
         self.__only_rent_station = only_rent_location
         self.__station_data = self.__data_loader.get_specific_station_data(name=year)

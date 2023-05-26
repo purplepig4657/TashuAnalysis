@@ -1,29 +1,26 @@
-import os
-
 import pandas as pd
-import matplotlib.pyplot as plt
+from sklearn.pipeline import Pipeline
+
+from src.eda.figure_eda_abstract import FigureEdaAbstract
+from src.transform.transformer.column_renamer import ColumnRenamer
+from src.transform.transformer.location_column_extender import LocationColumnExtender
+from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
 
 
-class RentalAmountScatter:
+class RentalAmountScatter(FigureEdaAbstract):
     """
-    It is needless figure, but just example how to write eda.
+    It is needless figure, but just example show how to write eda.
     """
 
-    def __init__(self, data: pd.DataFrame):
-        self.__FILE_PATH = os.path.dirname(os.path.abspath(__file__))
-        self.__data = data
+    def __init__(self, data: pd.DataFrame, is_processed: bool = False):
+        self.__pipeline = Pipeline([
+            ('renamer', ColumnRenamer()),
+            ('str2datatime', StringToDatetimeConverter()),
+            ('location_extender', LocationColumnExtender(only_rent_location=True))
+        ])
 
-    def generate(self):
-        self.__data.plot(kind='scatter', x='rent_longitude', y='rent_latitude',
-                         s=self.__data['distance'] / 25, c='distance', figsize=(10, 7), alpha=0.1)
-        plt.show()
+        super().__init__(data=data, pipeline=self.__pipeline, is_processed=is_processed)
 
-    def to_file(self):
-        self.__data.plot(kind='scatter', x='rent_longitude', y='rent_latitude',
-                         s=self.__data['distance'] / 25, c='distance', figsize=(10, 7), alpha=0.1)
-        self.save_figure(figure_name='rental_amount_scatter', path=f'{self.__FILE_PATH}/result')
-
-    # noinspection PyMethodMayBeStatic
-    def save_figure(self, figure_name, path, extension='png', resolution=300):
-        file_path = os.path.join(path, f"{figure_name}.{extension}")
-        plt.savefig(file_path, format=extension, dpi=resolution)
+    def generate(self, data: pd.DataFrame):
+        data.plot(kind='scatter', x='rent_longitude', y='rent_latitude', s=data['distance'] / 25,
+                  c='distance', figsize=(10, 7), alpha=0.1)
