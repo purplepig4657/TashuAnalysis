@@ -2,8 +2,10 @@ import os
 
 import pandas as pd
 
+from src.base.singleton_meta import SingletonMeta
 
-class DataLoader:
+
+class DataLoader(metaclass=SingletonMeta):
     def __init__(self, rent_data_information: dict = None, station_data_information: dict = None):
         self.__FILE_PATH = os.path.dirname(os.path.abspath(__file__))
         self.__DATA_DIRECTORY = os.path.join(self.__FILE_PATH, "data")
