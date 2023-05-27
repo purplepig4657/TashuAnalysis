@@ -1,6 +1,8 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
+from src.base.column_name import CN
+
 
 class SimpleDatetimeAggregator(BaseEstimator, TransformerMixin):
     """
@@ -16,12 +18,14 @@ class SimpleDatetimeAggregator(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X: pd.DataFrame, y: pd.DataFrame = None):
-        sampled_X = X[['rent_station', 'rent_date']].copy()
+        sampled_X = X[
+            [CN.RENT_STATION, CN.RENT_DATE]
+        ].copy()
         return self.aggregate(sampled_X)
 
     # noinspection PyMethodMayBeStatic
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
-        X['rent_date'] = X['rent_date'].dt.floor('H')
-        X['count'] = X.groupby('rent_date')['rent_station'].transform('count')
-        X.drop_duplicates(subset=['rent_date', 'rent_station'], inplace=True)
+        X[CN.RENT_DATE] = X[CN.RENT_DATE].dt.floor('H')
+        X[CN.RENT_COUNT] = X.groupby(CN.RENT_DATE)[CN.RENT_STATION].transform('count')
+        X.drop_duplicates(subset=[CN.RENT_DATE, CN.RENT_STATION], inplace=True)
         return X
