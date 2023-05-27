@@ -26,6 +26,6 @@ class SimpleDatetimeAggregator(BaseEstimator, TransformerMixin):
     # noinspection PyMethodMayBeStatic
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
         X[CN.RENT_DATE] = X[CN.RENT_DATE].dt.floor('H')
-        X[CN.RENT_COUNT] = X.groupby(CN.RENT_DATE)[CN.RENT_STATION].transform('count')
+        X[CN.RENT_COUNT] = X.groupby([CN.RENT_DATE, CN.RENT_STATION])[CN.RENT_STATION].transform('count')
         X.drop_duplicates(subset=[CN.RENT_DATE, CN.RENT_STATION], inplace=True)
         return X
