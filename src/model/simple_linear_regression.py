@@ -4,8 +4,8 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
-from src.repository.data_loader import DataLoader
-from src.base.column_name import CN
+from src.repository.rent_data_loader import RentDataLoader
+from src.base.column_name import RentDataCN
 from src.transform.transformer.rent_data_concater import RentDataConcater
 from src.transform.transformer.simple_datetime_aggregator import SimpleDatetimeAggregator
 from src.transform.sampling.random_sampling import RandomSampling
@@ -18,21 +18,21 @@ class SimpleLinearRegression:
     def __init__(self):
         self.__lin_reg = LinearRegression()
 
-        data_loader = DataLoader()
+        data_loader = RentDataLoader()
 
         pipline = Pipeline([
             ('data_concatenate', RentDataConcater()),
             ('renamer', ColumnRenamer()),
             ('str2datatime', StringToDatetimeConverter()),
-            ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True, data_loader=data_loader)),
+            ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True)),
             ('aggregate', SimpleDatetimeAggregator())
         ])
 
-        self.__processed_data = pipline.fit_transform(data_loader.all_rent_data)
+        self.__processed_data = pipline.fit_transform(data_loader.all_data)
 
-        self.y = self.__processed_data[CN.RENT_COUNT]
-        self.X = self.__processed_data.drop(columns=[CN.RENT_COUNT])
-        self.X[CN.RENT_DATE] = self.X[CN.RENT_DATE].apply(lambda x: pd.to_datetime(x).timestamp())
+        self.y = self.__processed_data[RentDataCN.RENT_COUNT]
+        self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])
+        self.X[RentDataCN.RENT_DATE] = self.X[RentDataCN.RENT_DATE].apply(lambda x: pd.to_datetime(x).timestamp())
 
         random_sampling = RandomSampling(self.X, self.y)
         self.X_train, self.X_test, self.y_train, self.y_test = random_sampling.train_test_split()
