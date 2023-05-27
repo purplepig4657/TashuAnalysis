@@ -24,7 +24,7 @@ class SimpleLinearRegression:
             ('data_concatenate', RentDataConcater()),
             ('renamer', ColumnRenamer()),
             ('str2datatime', StringToDatetimeConverter()),
-            ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True, data_loader=data_loader)),
+            ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True)),
             ('aggregate', SimpleDatetimeAggregator())
         ])
 
