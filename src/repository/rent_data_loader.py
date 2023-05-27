@@ -40,7 +40,6 @@ class RentDataLoader(metaclass=SingletonMeta):
             raise NameError(f"Name {name} is not in all_rent_data.")
         return self.all_data[name]
 
-
     @property
     def available_data_list(self) -> list:
         return list(self.__rent_data_information.keys())
