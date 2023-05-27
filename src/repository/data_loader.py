@@ -2,7 +2,7 @@ import os
 
 import pandas as pd
 
-from src.repository.base.singleton_meta import SingletonMeta
+from src.base.singleton_meta import SingletonMeta
 
 
 class DataLoader(metaclass=SingletonMeta):
