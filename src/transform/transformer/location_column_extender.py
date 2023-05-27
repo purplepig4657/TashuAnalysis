@@ -3,7 +3,7 @@ from enum import Enum
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from src.base.column_name import CN
+from src.base.rent_data_column_name import RentDataCN
 from src.repository.data_loader import DataLoader
 
 
@@ -37,21 +37,21 @@ class LocationColumnExtender(BaseEstimator, TransformerMixin):
 
     def extend_location_data(self, data: pd.DataFrame) -> pd.DataFrame:
         rent_location_data_tmp = self.__location_data.rename(columns={
-            StationDataColumnName.ID: CN.RENT_STATION,
-            StationDataColumnName.LATITUDE: CN.RENT_LATITUDE,
-            StationDataColumnName.LONGITUDE: CN.RENT_LONGITUDE
+            StationDataColumnName.ID: RentDataCN.RENT_STATION,
+            StationDataColumnName.LATITUDE: RentDataCN.RENT_LATITUDE,
+            StationDataColumnName.LONGITUDE: RentDataCN.RENT_LONGITUDE
         })
-        data = pd.merge(data, rent_location_data_tmp, on=CN.RENT_STATION)
+        data = pd.merge(data, rent_location_data_tmp, on=RentDataCN.RENT_STATION)
 
         if not self.__only_rent_station:
             return_location_data_tmp = self.__location_data.rename(columns={
-                StationDataColumnName.ID: CN.RETURN_STATION,
-                StationDataColumnName.LATITUDE: CN.RETURN_LATITUDE,
-                StationDataColumnName.LONGITUDE: CN.RETURN_LONGITUDE
+                StationDataColumnName.ID: RentDataCN.RETURN_STATION,
+                StationDataColumnName.LATITUDE: RentDataCN.RETURN_LATITUDE,
+                StationDataColumnName.LONGITUDE: RentDataCN.RETURN_LONGITUDE
             })
-            data = pd.merge(data, return_location_data_tmp, on=CN.RETURN_STATION)
+            data = pd.merge(data, return_location_data_tmp, on=RentDataCN.RETURN_STATION)
 
-        data.sort_values(by=CN.RENT_DATE, ascending=True, inplace=True)
+        data.sort_values(by=RentDataCN.RENT_DATE, ascending=True, inplace=True)
         data.reset_index(drop=True, inplace=True)
 
         return data

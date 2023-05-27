@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from src.base.column_name import CN
+from src.base.rent_data_column_name import RentDataCN
 
 
 class StringToDatetimeConverter(BaseEstimator, TransformerMixin):
@@ -11,7 +11,7 @@ class StringToDatetimeConverter(BaseEstimator, TransformerMixin):
     """
 
     def __init__(self):
-        self.__columns = [CN.RENT_DATE, CN.RETURN_DATE]
+        self.__columns = [RentDataCN.RENT_DATE, RentDataCN.RETURN_DATE]
 
     def fit(self, X: pd.DataFrame, y=None):
         return self

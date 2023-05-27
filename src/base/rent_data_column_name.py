@@ -1,4 +1,4 @@
-class CN:
+class RentDataCN:
     RENT_STATION = 'rent_station'
     RENT_DATE = 'rent_date'
     RETURN_STATION = 'return_station'

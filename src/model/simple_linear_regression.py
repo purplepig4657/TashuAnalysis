@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
 from src.repository.data_loader import DataLoader
-from src.base.column_name import CN
+from src.base.rent_data_column_name import RentDataCN
 from src.transform.transformer.rent_data_concater import RentDataConcater
 from src.transform.transformer.simple_datetime_aggregator import SimpleDatetimeAggregator
 from src.transform.sampling.random_sampling import RandomSampling
@@ -30,9 +30,9 @@ class SimpleLinearRegression:
 
         self.__processed_data = pipline.fit_transform(data_loader.all_rent_data)
 
-        self.y = self.__processed_data[CN.RENT_COUNT]
-        self.X = self.__processed_data.drop(columns=[CN.RENT_COUNT])
-        self.X[CN.RENT_DATE] = self.X[CN.RENT_DATE].apply(lambda x: pd.to_datetime(x).timestamp())
+        self.y = self.__processed_data[RentDataCN.RENT_COUNT]
+        self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])
+        self.X[RentDataCN.RENT_DATE] = self.X[RentDataCN.RENT_DATE].apply(lambda x: pd.to_datetime(x).timestamp())
 
         random_sampling = RandomSampling(self.X, self.y)
         self.X_train, self.X_test, self.y_train, self.y_test = random_sampling.train_test_split()

@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.base.column_name import CN
+from src.base.rent_data_column_name import RentDataCN
 from src.eda.figure_eda_abstract import FigureEdaAbstract
 from src.transform.transformer.column_renamer import ColumnRenamer
 from src.transform.transformer.location_column_extender import LocationColumnExtender
@@ -25,10 +25,10 @@ class RentalAmountScatter(FigureEdaAbstract):
     def generate(self, data: pd.DataFrame):
         data.plot(
             kind='scatter',
-            x=CN.RENT_LONGITUDE,
-            y=CN.RENT_LATITUDE,
-            s=data[CN.DISTANCE] / 25,
-            c=CN.DISTANCE,
+            x=RentDataCN.RENT_LONGITUDE,
+            y=RentDataCN.RENT_LATITUDE,
+            s=data[RentDataCN.DISTANCE] / 25,
+            c=RentDataCN.DISTANCE,
             figsize=(10, 7),
             alpha=0.1
         )
