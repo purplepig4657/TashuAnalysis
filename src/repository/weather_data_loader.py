@@ -12,13 +12,13 @@ class WeatherDataLoader(metaclass=SingletonMeta):
         self.__WEATHER_DATA = "weather"
 
         self.__weather_data_information = {
-            "2022": 2022,
-            "2021": 2021,
-            "2020": 2020,
-            "2019": 2019,
-            "2018": 2018,
-            "2017": 2017,
-            "2016": 2016
+            "2022": (2022, 'cp949'),
+            "2021": (2021, 'cp949'),
+            "2020": (2020, 'cp949'),
+            "2019": (2019, 'cp949'),
+            "2018": (2018, 'cp949'),
+            "2017": (2017, 'cp949'),
+            "2016": (2016, 'cp949')
         } if weather_data_information is None else weather_data_information
 
         self.__all_weather_data = self.__load_all_data()
@@ -32,7 +32,7 @@ class WeatherDataLoader(metaclass=SingletonMeta):
     def __load_all_data(self) -> dict:
         result = dict()
         for key, value in self.__weather_data_information.items():
-            result[key] = self.__load_data(value)
+            result[key] = self.__load_data(*value)
         return result
 
     def get_specific_data(self, name: str) -> pd.DataFrame:
