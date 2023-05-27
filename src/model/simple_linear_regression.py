@@ -4,7 +4,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
-from src.repository.data_loader import DataLoader
+from src.repository.rent_data_loader import RentDataLoader
 from src.base.rent_data_column_name import RentDataCN
 from src.transform.transformer.rent_data_concater import RentDataConcater
 from src.transform.transformer.simple_datetime_aggregator import SimpleDatetimeAggregator
@@ -18,7 +18,7 @@ class SimpleLinearRegression:
     def __init__(self):
         self.__lin_reg = LinearRegression()
 
-        data_loader = DataLoader()
+        data_loader = RentDataLoader()
 
         pipline = Pipeline([
             ('data_concatenate', RentDataConcater()),
@@ -28,7 +28,7 @@ class SimpleLinearRegression:
             ('aggregate', SimpleDatetimeAggregator())
         ])
 
-        self.__processed_data = pipline.fit_transform(data_loader.all_rent_data)
+        self.__processed_data = pipline.fit_transform(data_loader.all_data)
 
         self.y = self.__processed_data[RentDataCN.RENT_COUNT]
         self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])

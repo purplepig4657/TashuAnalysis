@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
 from src.base.rent_data_column_name import RentDataCN
-from src.repository.data_loader import DataLoader
+from src.repository.station_data_loader import StationDataLoader
 
 
 class StationDataColumnName:
@@ -19,10 +19,10 @@ class LocationColumnExtender(BaseEstimator, TransformerMixin):
     depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`
     """
 
-    def __init__(self, year: str = "2021", only_rent_location: bool = False, data_loader: DataLoader = None):
-        self.__data_loader = DataLoader() if data_loader is None else data_loader
+    def __init__(self, year: str = "2021", only_rent_location: bool = False, data_loader: StationDataLoader = None):
+        self.__data_loader = StationDataLoader() if data_loader is None else data_loader
         self.__only_rent_station = only_rent_location
-        self.__station_data = self.__data_loader.get_specific_station_data(name=year)
+        self.__station_data = self.__data_loader.get_specific_data(name=year)
         self.__location_data = self.__station_data[[
             StationDataColumnName.ID,
             StationDataColumnName.LATITUDE,
