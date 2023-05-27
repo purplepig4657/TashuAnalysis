@@ -10,3 +10,9 @@ class RentDataCN:
     RETURN_LATITUDE = 'return_latitude'
     RETURN_LONGITUDE = 'return_longitude'
     RENT_COUNT = 'rent_count'
+
+
+class StationDataCN:
+    ID = 'id'
+    LATITUDE = 'latitude'
+    LONGITUDE = 'longitude'

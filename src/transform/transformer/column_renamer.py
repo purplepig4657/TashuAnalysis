@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 
-from src.base.rent_data_column_name import RentDataCN
+from src.base.column_name import RentDataCN
 
 
 class ColumnRenamer(BaseEstimator, TransformerMixin):

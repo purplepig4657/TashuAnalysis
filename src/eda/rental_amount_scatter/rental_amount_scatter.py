@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.base.rent_data_column_name import RentDataCN
+from src.base.column_name import RentDataCN
 from src.eda.figure_eda_abstract import FigureEdaAbstract
 from src.transform.transformer.column_renamer import ColumnRenamer
 from src.transform.transformer.location_column_extender import LocationColumnExtender

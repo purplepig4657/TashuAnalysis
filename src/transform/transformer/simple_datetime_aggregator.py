@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from src.base.rent_data_column_name import RentDataCN
+from src.base.column_name import RentDataCN
 
 
 class SimpleDatetimeAggregator(BaseEstimator, TransformerMixin):

@@ -5,7 +5,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
 from src.repository.rent_data_loader import RentDataLoader
-from src.base.rent_data_column_name import RentDataCN
+from src.base.column_name import RentDataCN
 from src.transform.transformer.rent_data_concater import RentDataConcater
 from src.transform.transformer.simple_datetime_aggregator import SimpleDatetimeAggregator
 from src.transform.sampling.random_sampling import RandomSampling
