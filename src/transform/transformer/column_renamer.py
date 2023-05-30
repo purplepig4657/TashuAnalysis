@@ -33,6 +33,7 @@ class ColumnRenamer(BaseEstimator, TransformerMixin):
             '기온(°C)': WeatherDataCN.TEMPERATURE,
             '강수량(mm)': WeatherDataCN.PRECIPITATION,
             '풍속(m/s)': WeatherDataCN.WIND_SPEED,
+            '습도(%)': WeatherDataCN.HUMIDITY,
             '일조(hr)': WeatherDataCN.SUNSHINE_DURATION,
             '현상번호(국내식)': WeatherDataCN.WEATHER_NUMBER,
             '지면온도(°C)': WeatherDataCN.GROUND_TEMPERATURE
