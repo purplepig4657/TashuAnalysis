@@ -4,6 +4,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
+from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.base.column_name import RentDataCN
 from src.transform.transformer.data_concater import DataConcater
@@ -14,10 +15,8 @@ from src.transform.transformer.column_renamer import ColumnRenamer
 from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
 
 
-class SimpleLinearRegression:
+class SimpleLinearRegression(RegressionModelBase):
     def __init__(self):
-        self.__lin_reg = LinearRegression()
-
         data_loader = RentDataLoader()
 
         pipline = Pipeline([
@@ -37,11 +36,4 @@ class SimpleLinearRegression:
         random_sampling = RandomSampling(self.X, self.y)
         self.X_train, self.X_test, self.y_train, self.y_test = random_sampling.train_test_split()
 
-    def fit(self):
-        self.__lin_reg.fit(self.X_train, self.y_train)
-
-    def rmse(self):
-        test_predictions = self.__lin_reg.predict(self.X_test)
-        lin_mse = mean_squared_error(self.y_test, test_predictions)
-        lin_rmse = np.sqrt(lin_mse)
-        return lin_rmse
+        super().__init__(self.X, self.y)
