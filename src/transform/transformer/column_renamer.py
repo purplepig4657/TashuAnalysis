@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 
-from src.base.column_name import RentDataCN
+from src.base.column_name import RentDataCN, WeatherDataCN
 
 
 class ColumnRenamer(BaseEstimator, TransformerMixin):
@@ -26,5 +26,15 @@ class ColumnRenamer(BaseEstimator, TransformerMixin):
             '반납스테이션': RentDataCN.RETURN_STATION,
             '반납일시': RentDataCN.RETURN_DATE,
             '이동거리': RentDataCN.DISTANCE,
-            '회원구분': RentDataCN.USER_CATEGORY
+            '회원구분': RentDataCN.USER_CATEGORY,
+            '지점': WeatherDataCN.ID,
+            '지점명': WeatherDataCN.NAME,
+            '일시': WeatherDataCN.DATE,
+            '기온(°C)': WeatherDataCN.TEMPERATURE,
+            '강수량(mm)': WeatherDataCN.PRECIPITATION,
+            '풍속(m/s)': WeatherDataCN.WIND_SPEED,
+            '습도(%)': WeatherDataCN.HUMIDITY,
+            '일조(hr)': WeatherDataCN.SUNSHINE_DURATION,
+            '현상번호(국내식)': WeatherDataCN.WEATHER_NUMBER,
+            '지면온도(°C)': WeatherDataCN.GROUND_TEMPERATURE
         })

@@ -16,3 +16,16 @@ class StationDataCN:
     ID = 'id'
     LATITUDE = 'latitude'
     LONGITUDE = 'longitude'
+
+
+class WeatherDataCN:
+    ID = 'id'
+    NAME = 'name'
+    DATE = 'date'
+    TEMPERATURE = 'temperature'
+    PRECIPITATION = 'precipitation'
+    WIND_SPEED = 'wind_speed'
+    HUMIDITY = 'humidity'
+    SUNSHINE_DURATION = 'sunshine_duration'
+    WEATHER_NUMBER = 'weather_number'
+    GROUND_TEMPERATURE = 'ground_temperature'

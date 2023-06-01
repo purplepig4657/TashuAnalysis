@@ -6,7 +6,7 @@ from sklearn.metrics import mean_squared_error
 
 from src.repository.rent_data_loader import RentDataLoader
 from src.base.column_name import RentDataCN
-from src.transform.transformer.rent_data_concater import RentDataConcater
+from src.transform.transformer.data_concater import DataConcater
 from src.transform.transformer.simple_datetime_aggregator import SimpleDatetimeAggregator
 from src.transform.sampling.random_sampling import RandomSampling
 from src.transform.transformer.location_column_extender import LocationColumnExtender
@@ -21,7 +21,7 @@ class SimpleLinearRegression:
         data_loader = RentDataLoader()
 
         pipline = Pipeline([
-            ('data_concatenate', RentDataConcater()),
+            ('data_concatenate', DataConcater()),
             ('renamer', ColumnRenamer()),
             ('str2datatime', StringToDatetimeConverter()),
             ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True)),
