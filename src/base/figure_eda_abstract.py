@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 class FigureEdaAbstract(ABC):
     def __init__(self, data: pd.DataFrame, pipeline: Pipeline, is_processed: bool = False):
         self.__CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
-        self.__PATH = os.path.join(self.__CURRENT_PATH, 'result')
+        self.__PATH = os.path.join(self.__CURRENT_PATH, '../eda/result')
 
         self.__data = data if is_processed else pipeline.fit_transform(data)
 
