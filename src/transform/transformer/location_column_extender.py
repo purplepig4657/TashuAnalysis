@@ -1,5 +1,3 @@
-from enum import Enum
-
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
@@ -13,8 +11,8 @@ class LocationColumnExtender(BaseEstimator, TransformerMixin):
     depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`
     """
 
-    def __init__(self, year: str = "2021", only_rent_location: bool = False, data_loader: StationDataLoader = None):
-        self.__data_loader = StationDataLoader() if data_loader is None else data_loader
+    def __init__(self, year: str = "2021", only_rent_location: bool = False):
+        self.__data_loader = StationDataLoader()
         self.__only_rent_station = only_rent_location
         self.__station_data = self.__data_loader.get_specific_data(name=year)
         self.__location_data = self.__station_data[[
