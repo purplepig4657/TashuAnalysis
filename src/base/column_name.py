@@ -42,3 +42,4 @@ class TimeDataCN:
     DAY = 'day'
     HOUR = 'hour'
     WEEKDAY = 'weekday'
+    TIME_CATEGORY = 'time_category'
