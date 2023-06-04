@@ -10,13 +10,14 @@ from src.transform.transformer.data_concater import DataConcater
 from src.transform.transformer.datetime_to_category import DatetimeToCategory
 from src.transform.transformer.location_column_extender import LocationColumnExtender
 from src.transform.transformer.custom_one_hot_encoder import CustomOneHotEncoder
-from src.transform.transformer.weather_aggregator import WeatherAggregator
+from src.transform.transformer.nighttime_dropper import NighttimeDropper
+from src.transform.transformer.temperature_aggregator import TemperatureAggregator
 from src.transform.transformer.weather_column_extender import WeatherColumnExtender
 from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
 from src.transform.transformer.weather_data_preprocessor import WeatherDataPreprocessor
 
 
-class RegressionWithWeatherCategory(RegressionModelBase):
+class RegressionWithTemperature(RegressionModelBase):
     def __init__(self):
         data_loader = RentDataLoader()
         weather_data_loader = WeatherDataLoader()
@@ -37,12 +38,15 @@ class RegressionWithWeatherCategory(RegressionModelBase):
             ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True)),
             ('weather_extender', WeatherColumnExtender(preprocessed_data=weather_data)),
             ('datetime2category', DatetimeToCategory()),
-            ('aggregate', WeatherAggregator()),
+            ('aggregate', TemperatureAggregator()),
+            ('dropper', NighttimeDropper()),
             ('one-hot_encode', CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
-                                                    TimeDataCN.TIME_CATEGORY, WeatherDataCN.RAINFALL]))
+                                                    TimeDataCN.TIME_CATEGORY]))
         ])
 
         self.__processed_data = pipline.fit_transform(data_loader.all_data)
+
+        print(self.__processed_data[WeatherDataCN.TEMPERATURE_AVG])
 
         self.__processed_data = self.__processed_data[self.__processed_data[RentDataCN.RENT_STATION] == 133]
 
@@ -50,4 +54,3 @@ class RegressionWithWeatherCategory(RegressionModelBase):
         self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])
 
         super().__init__(self.X, self.y)
-
