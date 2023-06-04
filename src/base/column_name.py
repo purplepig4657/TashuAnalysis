@@ -29,17 +29,28 @@ class WeatherDataCN:
     SUNSHINE_DURATION = 'sunshine_duration'
     WEATHER_NUMBER = 'weather_number'
     GROUND_TEMPERATURE = 'ground_temperature'
+    RAINFALL = 'rainfall'
+
+
+class WeatherDataValue:
+    RAIN = 'rain'
+    NON_RAIN = 'non_rain'
+    CLOUDY = 'cloudy'
+    NON_CLOUDY = 'non_cloudy'
 
 
 class TimeDataCN:
-    MORNING_PEAK = 'morning_peak'
-    MORNING_NON_PEAK = 'morning_non_peak'
-    AFTERNOON_PEAK = 'afternoon_peak'
-    AFTERNOON_NON_PEAK = 'afternoon_non_peak'
-    NIGHTTIME = 'nighttime'
     YEAR = 'year'
     MONTH = 'month'
     DAY = 'day'
     HOUR = 'hour'
     WEEKDAY = 'weekday'
     TIME_CATEGORY = 'time_category'
+
+
+class TimeDataValue:
+    MORNING_PEAK = 'morning_peak'
+    MORNING_NON_PEAK = 'morning_non_peak'
+    AFTERNOON_PEAK = 'afternoon_peak'
+    AFTERNOON_NON_PEAK = 'afternoon_non_peak'
+    NIGHTTIME = 'nighttime'

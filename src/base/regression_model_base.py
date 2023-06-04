@@ -20,11 +20,10 @@ class RegressionModelBase:
     }
 
     __result = None
-    __model_name = 'LinearRegression'
 
     def __init__(self, X: pd.DataFrame, y: pd.DataFrame):
+        self.model = self.available_model['LinearRegression']
         self.X, self.y = X, y
-        self.model = self.available_model[self.__model_name]
 
     def fit(self):
         self.__result = cross_validate(self.model, self.X, self.y, cv=self.__skf,
@@ -45,4 +44,4 @@ class RegressionModelBase:
     def set_model(self, model_name: str):
         if model_name not in self.available_model:
             raise "Unsupported model"
-        self.__model_name = self.available_model[model_name]
+        self.model = self.available_model[model_name]

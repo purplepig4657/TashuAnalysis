@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.pipeline import Pipeline
 
-from src.base.column_name import RentDataCN, TimeDataCN
+from src.base.column_name import RentDataCN, TimeDataCN, WeatherDataCN
 from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.repository.weather_data_loader import WeatherDataLoader
@@ -10,13 +10,13 @@ from src.transform.transformer.data_concater import DataConcater
 from src.transform.transformer.datetime_to_category import DatetimeToCategory
 from src.transform.transformer.location_column_extender import LocationColumnExtender
 from src.transform.transformer.custom_one_hot_encoder import CustomOneHotEncoder
-from src.transform.transformer.specific_time_slot_aggregator import SpecificTimeSlotAggregator
+from src.transform.transformer.weather_aggregator import WeatherAggregator
 from src.transform.transformer.weather_column_extender import WeatherColumnExtender
 from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
 from src.transform.transformer.weather_data_preprocessor import WeatherDataPreprocessor
 
 
-class RegressionWithTimeCategory(RegressionModelBase):
+class RegressionWithWeatherCategory(RegressionModelBase):
     def __init__(self):
         data_loader = RentDataLoader()
         weather_data_loader = WeatherDataLoader()
@@ -37,9 +37,9 @@ class RegressionWithTimeCategory(RegressionModelBase):
             ('location_extender', LocationColumnExtender(year="2021", only_rent_location=True)),
             ('weather_extender', WeatherColumnExtender(preprocessed_data=weather_data)),
             ('datetime2category', DatetimeToCategory()),
-            ('aggregate', SpecificTimeSlotAggregator()),
-            ('one-hot_encode', CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY,
-                                                    TimeDataCN.WEEKDAY, TimeDataCN.TIME_CATEGORY]))
+            ('aggregate', WeatherAggregator()),
+            ('one-hot_encode', CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
+                                                    TimeDataCN.TIME_CATEGORY, WeatherDataCN.RAINFALL]))
         ])
 
         self.__processed_data = pipline.fit_transform(data_loader.all_data)
@@ -50,3 +50,4 @@ class RegressionWithTimeCategory(RegressionModelBase):
         self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])
 
         super().__init__(self.X, self.y)
+
