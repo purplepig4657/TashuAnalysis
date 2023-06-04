@@ -6,7 +6,7 @@ from src.base.column_name import RentDataCN, TimeDataCN
 
 class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
     """
-    Simple Aggregate data per datetime hour and per rent_station.
+    Simple Aggregate data with specific time slot
     depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`,
                 :py:class:`src.transform.transformer.string_to_datetime_converter.StringToDatetimeConverter`
     """
@@ -36,12 +36,6 @@ class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
             TimeDataCN.TIME_CATEGORY,
             RentDataCN.RENT_STATION
         ])[RentDataCN.RENT_STATION].transform('count')
-        X.drop_duplicates(subset=[
-            TimeDataCN.MONTH,
-            TimeDataCN.DAY,
-            TimeDataCN.TIME_CATEGORY,
-            RentDataCN.RENT_STATION
-        ], inplace=True)
         X.drop_duplicates(subset=[
             TimeDataCN.MONTH,
             TimeDataCN.DAY,

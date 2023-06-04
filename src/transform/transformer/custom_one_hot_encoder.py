@@ -4,9 +4,9 @@ import pandas as pd
 from src.base.column_name import RentDataCN, WeatherDataCN
 
 
-class OneHotEncoder(BaseEstimator, TransformerMixin):
+class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
     """
-    One hot encoder.
+    Custom one hot encoder.
     """
 
     def __init__(self, encoding_data: list):

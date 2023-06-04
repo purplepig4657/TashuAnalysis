@@ -9,7 +9,7 @@ from src.transform.transformer.column_renamer import ColumnRenamer
 from src.transform.transformer.data_concater import DataConcater
 from src.transform.transformer.datetime_to_category import DatetimeToCategory
 from src.transform.transformer.location_column_extender import LocationColumnExtender
-from src.transform.transformer.one_hot_encoder import OneHotEncoder
+from src.transform.transformer.custom_one_hot_encoder import CustomOneHotEncoder
 from src.transform.transformer.specific_time_slot_aggregator import SpecificTimeSlotAggregator
 from src.transform.transformer.weather_column_extender import WeatherColumnExtender
 from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
@@ -38,7 +38,7 @@ class RegressionWithTimeCategory(RegressionModelBase):
             ('weather_extender', WeatherColumnExtender(preprocessed_data=weather_data)),
             ('datetime2category', DatetimeToCategory()),
             ('aggregate', SpecificTimeSlotAggregator()),
-            ('one-hot_encode', OneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY, TimeDataCN.TIME_CATEGORY]))
+            ('one-hot_encode', CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY, TimeDataCN.TIME_CATEGORY]))
         ])
 
         self.__processed_data = pipline.fit_transform(data_loader.all_data)
