@@ -10,8 +10,9 @@ class StringToDatetimeConverter(BaseEstimator, TransformerMixin):
     depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`
     """
 
-    def __init__(self, data_category: str = 'rent'):
+    def __init__(self, data_category: str = 'rent', per_hour: bool = False):
         self.__data_category = data_category
+        self.__per_hour = per_hour
         if data_category == 'rent':
             self.__columns = [
                 RentDataCN.RENT_DATE,
@@ -36,9 +37,13 @@ class StringToDatetimeConverter(BaseEstimator, TransformerMixin):
             data.dropna(subset=[column], axis=0, inplace=True)
             data[column] = data[column].astype('int')
             data[column] = pd.to_datetime(data[column].apply(str), format='%Y%m%d%H%M%S', errors='coerce')
+        for column in self.__columns:
+            data[column] = data[column].dt.floor('H')
         return data
 
     def weather_str_to_datetime(self, data: pd.DataFrame) -> pd.DataFrame:
         for column in self.__columns:
             data[column] = pd.to_datetime(data[column].apply(str), format='%Y-%m-%d %H:%M:%S', errors='coerce')
+        for column in self.__columns:
+            data[column] = data[column].dt.floor('H')
         return data

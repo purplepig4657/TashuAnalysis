@@ -1,7 +1,7 @@
 from sklearn.base import BaseEstimator, TransformerMixin
 import pandas as pd
 
-from src.base.column_name import RentDataCN, WeatherDataCN
+from src.base.column_name import RentDataCN, WeatherDataCN, TimeDataCN
 
 
 class DatetimeToCategory(BaseEstimator, TransformerMixin):
@@ -24,10 +24,10 @@ class DatetimeToCategory(BaseEstimator, TransformerMixin):
         return X
 
     def categorical_datetime_extender(self, X: pd.DataFrame) -> pd.DataFrame:
-        X['month'] = X[self.__datetime_column].dt.month
-        X['day'] = X[self.__datetime_column].dt.day
-        X['hour'] = X[self.__datetime_column].dt.hour
-        X['weekday'] = X[self.__datetime_column].dt.weekday
+        X[TimeDataCN.MONTH] = X[self.__datetime_column].dt.month
+        X[TimeDataCN.DAY] = X[self.__datetime_column].dt.day
+        X[TimeDataCN.HOUR] = X[self.__datetime_column].dt.hour
+        X[TimeDataCN.WEEKDAY] = X[self.__datetime_column].dt.weekday
 
         return X
 
