@@ -4,7 +4,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from src.base.column_name import RentDataCN, WeatherDataCN, WeatherDataValue, TimeDataCN, TimeDataValue
 
 
-class WeatherAggregator(BaseEstimator, TransformerMixin):
+class RainAggregator(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
 
@@ -14,6 +14,7 @@ class WeatherAggregator(BaseEstimator, TransformerMixin):
     def transform(self, X: pd.DataFrame, y: pd.DataFrame = None):
         sampled_X = X[[
             RentDataCN.RENT_STATION,
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             TimeDataCN.HOUR,
@@ -27,6 +28,7 @@ class WeatherAggregator(BaseEstimator, TransformerMixin):
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
         X[TimeDataCN.TIME_CATEGORY] = X[TimeDataCN.HOUR].apply(self.classify_time)
         X[RentDataCN.RENT_COUNT] = X.groupby([
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             TimeDataCN.TIME_CATEGORY,
@@ -34,6 +36,7 @@ class WeatherAggregator(BaseEstimator, TransformerMixin):
         ])[RentDataCN.RENT_STATION].transform('count')
 
         X[WeatherDataCN.RAINFALL] = X.groupby([
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             TimeDataCN.TIME_CATEGORY,
@@ -42,13 +45,14 @@ class WeatherAggregator(BaseEstimator, TransformerMixin):
             lambda x: WeatherDataValue.RAIN if any(x > 0.5) else WeatherDataValue.NON_RAIN)
 
         X.drop_duplicates(subset=[
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             TimeDataCN.TIME_CATEGORY,
             RentDataCN.RENT_STATION
         ], inplace=True)
 
-        X.drop([WeatherDataCN.PRECIPITATION], axis=1, inplace=True)
+        X.drop([WeatherDataCN.PRECIPITATION, TimeDataCN.YEAR], axis=1, inplace=True)
 
         return X
 

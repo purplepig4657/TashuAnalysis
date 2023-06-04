@@ -23,6 +23,7 @@ class WeatherDataCN:
     NAME = 'name'
     DATE = 'date'
     TEMPERATURE = 'temperature'
+    TEMPERATURE_AVG = 'temperature_avg'
     PRECIPITATION = 'precipitation'
     WIND_SPEED = 'wind_speed'
     HUMIDITY = 'humidity'

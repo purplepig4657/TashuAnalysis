@@ -1,16 +1,10 @@
 import pandas as pd
 from sklearn.base import BaseEstimator, TransformerMixin
 
-from src.base.column_name import RentDataCN, TimeDataCN, TimeDataValue
+from src.base.column_name import RentDataCN, WeatherDataCN, WeatherDataValue, TimeDataCN, TimeDataValue
 
 
-class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
-    """
-    Simple Aggregate data with specific time slot
-    depends_on: :py:class:`src.transform.transformer.column_renamer.ColumnRenamer`,
-                :py:class:`src.transform.transformer.string_to_datetime_converter.StringToDatetimeConverter`
-    """
-
+class TemperatureAggregator(BaseEstimator, TransformerMixin):
     def __init__(self):
         pass
 
@@ -24,7 +18,8 @@ class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             TimeDataCN.HOUR,
-            TimeDataCN.WEEKDAY
+            TimeDataCN.WEEKDAY,
+            WeatherDataCN.TEMPERATURE,
         ]].copy()
         return self.aggregate(sampled_X)
 
@@ -38,6 +33,15 @@ class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
             TimeDataCN.TIME_CATEGORY,
             RentDataCN.RENT_STATION
         ])[RentDataCN.RENT_STATION].transform('count')
+
+        X[WeatherDataCN.TEMPERATURE_AVG] = X.groupby([
+            TimeDataCN.YEAR,
+            TimeDataCN.MONTH,
+            TimeDataCN.DAY,
+            TimeDataCN.TIME_CATEGORY,
+            WeatherDataCN.TEMPERATURE
+        ])[WeatherDataCN.TEMPERATURE].transform('mean')
+
         X.drop_duplicates(subset=[
             TimeDataCN.YEAR,
             TimeDataCN.MONTH,
@@ -45,7 +49,9 @@ class SpecificTimeSlotAggregator(BaseEstimator, TransformerMixin):
             TimeDataCN.TIME_CATEGORY,
             RentDataCN.RENT_STATION
         ], inplace=True)
-        X.drop([TimeDataCN.YEAR], axis=1, inplace=True)
+
+        X.drop([WeatherDataCN.TEMPERATURE, TimeDataCN.YEAR], axis=1, inplace=True)
+
         return X
 
     # noinspection PyMethodMayBeStatic

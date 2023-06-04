@@ -24,6 +24,7 @@ class DatetimeToCategory(BaseEstimator, TransformerMixin):
         return X
 
     def categorical_datetime_extender(self, X: pd.DataFrame) -> pd.DataFrame:
+        X[TimeDataCN.YEAR] = X[self.__datetime_column].dt.year
         X[TimeDataCN.MONTH] = X[self.__datetime_column].dt.month
         X[TimeDataCN.DAY] = X[self.__datetime_column].dt.day
         X[TimeDataCN.HOUR] = X[self.__datetime_column].dt.hour
