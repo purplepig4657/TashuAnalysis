@@ -1,19 +1,18 @@
-import pandas as pd
 from sklearn.pipeline import Pipeline
 
 from src.base.column_name import RentDataCN, TimeDataCN, WeatherDataCN
 from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.repository.weather_data_loader import WeatherDataLoader
-from src.transform.transformer.column_renamer import ColumnRenamer
-from src.transform.transformer.data_concater import DataConcater
-from src.transform.transformer.datetime_to_category import DatetimeToCategory
-from src.transform.transformer.location_column_extender import LocationColumnExtender
-from src.transform.transformer.custom_one_hot_encoder import CustomOneHotEncoder
-from src.transform.transformer.rain_aggregator import RainAggregator
-from src.transform.transformer.weather_column_extender import WeatherColumnExtender
-from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
-from src.transform.transformer.weather_data_preprocessor import WeatherDataPreprocessor
+from src.transform.common.column_renamer import ColumnRenamer
+from src.transform.common.data_concater import DataConcater
+from src.transform.common.datetime_to_category import DatetimeToCategory
+from src.transform.location.location_column_extender import LocationColumnExtender
+from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
+from src.transform.weather.rain_aggregator import RainAggregator
+from src.transform.weather.weather_column_extender import WeatherColumnExtender
+from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
+from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
 class RegressionWithRainCategory(RegressionModelBase):
@@ -25,7 +24,7 @@ class RegressionWithRainCategory(RegressionModelBase):
             ('data_concatenate', DataConcater(data_category='weather')),
             ('renamer', ColumnRenamer()),
             ('str2datetime', StringToDatetimeConverter(data_category='weather')),
-            ('preprocessor', WeatherDataPreprocessor())
+            ('preprocessor', WeatherPreprocessor())
         ])
 
         weather_data = weather_pipline.fit_transform(weather_data_loader.all_data)

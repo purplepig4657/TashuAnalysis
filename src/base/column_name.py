@@ -12,8 +12,12 @@ class RentDataCN:
     RENT_COUNT = 'rent_count'
 
 
-class StationDataCN:
+class LocationDataCN:
     ID = 'id'
+    VERSION = 'version'
+    STATION_NAME = 'station_name'
+    GU = 'gu'
+    DONG = 'dong'
     LATITUDE = 'latitude'
     LONGITUDE = 'longitude'
 
@@ -33,13 +37,6 @@ class WeatherDataCN:
     RAINFALL = 'rainfall'
 
 
-class WeatherDataValue:
-    RAIN = 'rain'
-    NON_RAIN = 'non_rain'
-    CLOUDY = 'cloudy'
-    NON_CLOUDY = 'non_cloudy'
-
-
 class TimeDataCN:
     YEAR = 'year'
     MONTH = 'month'
@@ -47,6 +44,11 @@ class TimeDataCN:
     HOUR = 'hour'
     WEEKDAY = 'weekday'
     TIME_CATEGORY = 'time_category'
+
+
+class ClusterDataCN:
+    STATION = 'station'
+    CLUSTER = 'cluster'
 
 
 class TimeDataValue:
@@ -57,6 +59,8 @@ class TimeDataValue:
     NIGHTTIME = 'nighttime'
 
 
-class ClusterDataCN:
-    RENT_STATION = 'rent_station'
-    CLUSTER = 'cluster'
+class WeatherDataValue:
+    RAIN = 'rain'
+    NON_RAIN = 'non_rain'
+    CLOUDY = 'cloudy'
+    NON_CLOUDY = 'non_cloudy'

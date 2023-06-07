@@ -3,9 +3,9 @@ from sklearn.pipeline import Pipeline
 
 from src.base.column_name import RentDataCN
 from src.base.figure_eda_abstract import FigureEdaAbstract
-from src.transform.transformer.column_renamer import ColumnRenamer
-from src.transform.transformer.location_column_extender import LocationColumnExtender
-from src.transform.transformer.string_to_datetime_converter import StringToDatetimeConverter
+from src.transform.common.column_renamer import ColumnRenamer
+from src.transform.location.location_column_extender import LocationColumnExtender
+from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
 
 
 class RentalAmountScatter(FigureEdaAbstract):
