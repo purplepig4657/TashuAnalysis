@@ -59,4 +59,4 @@ class TimeDataValue:
 
 class ClusterDataCN:
     RENT_STATION = 'rent_station'
-    cluster = 'CLUSTER'
+    CLUSTER = 'cluster'
