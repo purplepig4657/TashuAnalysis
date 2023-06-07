@@ -152,3 +152,4 @@ Temporary Items
 
 src/*.py
 src/*.ipynb
+.ipynb_checkpoints
