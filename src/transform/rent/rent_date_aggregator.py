@@ -30,7 +30,6 @@ class RentDateAggregator(BaseEstimator, TransformerMixin):
 
         return self.aggregate(sampled_X)
 
-    # noinspection PyMethodMayBeStatic
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
         X[RentDataCN.RENT_COUNT] = X.groupby([
             TimeDataCN.YEAR,

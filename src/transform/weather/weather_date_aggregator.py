@@ -31,7 +31,6 @@ class WeatherDateAggregator(BaseEstimator, TransformerMixin):
         ]].copy()
         return self.aggregate(sampled_X)
 
-    # noinspection PyMethodMayBeStatic
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
         X[WeatherDataCN.RAINFALL] = X.groupby([
             TimeDataCN.YEAR,

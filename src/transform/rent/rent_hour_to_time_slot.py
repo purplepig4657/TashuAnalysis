@@ -20,6 +20,7 @@ class RentHourToTimeSlot(BaseEstimator, TransformerMixin):
 
     def hour_to_time_slot(self, X: pd.DataFrame) -> pd.DataFrame:
         X[TimeDataCN.TIME_CATEGORY] = X[TimeDataCN.HOUR].apply(self.classify_time)
+        X.drop([TimeDataCN.HOUR], axis=1, inplace=True)
         return X
 
     # noinspection PyMethodMayBeStatic
