@@ -13,7 +13,7 @@ from src.transform.common.nighttime_dropper import NighttimeDropper
 from src.transform.common.specific_time_slot_aggregator import SpecificTimeSlotAggregator
 from src.transform.weather.weather_column_extender import WeatherColumnExtender
 from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
-from src.transform.weather.weather_data_preprocessor import WeatherDataPreprocessor
+from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
 class RegressionWithTimeCategory(RegressionModelBase):
@@ -25,7 +25,7 @@ class RegressionWithTimeCategory(RegressionModelBase):
             ('data_concatenate', DataConcater(data_category='weather')),
             ('renamer', ColumnRenamer()),
             ('str2datetime', StringToDatetimeConverter(data_category='weather')),
-            ('preprocessor', WeatherDataPreprocessor())
+            ('preprocessor', WeatherPreprocessor())
         ])
 
         weather_data = weather_pipline.fit_transform(weather_data_loader.all_data)

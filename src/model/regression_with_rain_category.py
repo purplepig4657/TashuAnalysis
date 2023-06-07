@@ -12,7 +12,7 @@ from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
 from src.transform.weather.rain_aggregator import RainAggregator
 from src.transform.weather.weather_column_extender import WeatherColumnExtender
 from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
-from src.transform.weather.weather_data_preprocessor import WeatherDataPreprocessor
+from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
 class RegressionWithRainCategory(RegressionModelBase):
@@ -24,7 +24,7 @@ class RegressionWithRainCategory(RegressionModelBase):
             ('data_concatenate', DataConcater(data_category='weather')),
             ('renamer', ColumnRenamer()),
             ('str2datetime', StringToDatetimeConverter(data_category='weather')),
-            ('preprocessor', WeatherDataPreprocessor())
+            ('preprocessor', WeatherPreprocessor())
         ])
 
         weather_data = weather_pipline.fit_transform(weather_data_loader.all_data)
