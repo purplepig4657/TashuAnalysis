@@ -4,12 +4,12 @@ from sklearn.pipeline import Pipeline
 from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.base.column_name import RentDataCN
-from src.transform.common.data_concater import DataConcater
-from src.transform.common.simple_datetime_aggregator import SimpleDatetimeAggregator
+from src.transform.old.data_concater import DataConcater
+from src.transform.old.simple_datetime_aggregator import SimpleDatetimeAggregator
 from src.transform.sampling.random_sampling import RandomSampling
-from src.transform.location.location_column_extender import LocationColumnExtender
-from src.transform.common.column_renamer import ColumnRenamer
-from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
+from src.transform.old.location_column_extender import LocationColumnExtender
+from src.transform.old.column_renamer import ColumnRenamer
+from src.transform.old.string_to_datetime_converter import StringToDatetimeConverter
 
 
 class SimpleLinearRegression(RegressionModelBase):

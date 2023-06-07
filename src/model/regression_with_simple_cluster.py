@@ -4,15 +4,15 @@ from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.base.column_name import RentDataCN, TimeDataCN, ClusterDataCN
 from src.repository.weather_data_loader import WeatherDataLoader
-from src.transform.cluster.cluster_column_extender import ClusterColumnExtender
+from src.transform.old.cluster_column_extender import ClusterColumnExtender
 from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
-from src.transform.common.data_concater import DataConcater
-from src.transform.common.datetime_to_category import DatetimeToCategory
-from src.transform.cluster.simple_cluster_aggregator import SimpleClusterAggregator
-from src.transform.location.location_column_extender import LocationColumnExtender
-from src.transform.common.column_renamer import ColumnRenamer
-from src.transform.common.string_to_datetime_converter import StringToDatetimeConverter
-from src.transform.weather.weather_column_extender import WeatherColumnExtender
+from src.transform.old.data_concater import DataConcater
+from src.transform.old.datetime_to_category import DatetimeToCategory
+from src.transform.old.simple_cluster_aggregator import SimpleClusterAggregator
+from src.transform.old.location_column_extender import LocationColumnExtender
+from src.transform.old.column_renamer import ColumnRenamer
+from src.transform.old.string_to_datetime_converter import StringToDatetimeConverter
+from src.transform.old.weather_column_extender import WeatherColumnExtender
 from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
