@@ -55,3 +55,8 @@ class TimeDataValue:
     AFTERNOON_PEAK = 'afternoon_peak'
     AFTERNOON_NON_PEAK = 'afternoon_non_peak'
     NIGHTTIME = 'nighttime'
+
+
+class ClusterDataCN:
+    RENT_STATION = 'rent_station'
+    CLUSTER = 'cluster'
