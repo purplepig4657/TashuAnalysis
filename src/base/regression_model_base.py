@@ -41,6 +41,15 @@ class RegressionModelBase:
         print()
         print(self.X.head())
 
+    def get_X(self) -> pd.DataFrame:
+        return self.X
+
+    def get_y(self) -> pd.DataFrame :
+        return self.y
+
+    def get_estimator(self):
+        return self.__result['estimator']
+
     def result(self):
         if not self.__result:
             self.fit()

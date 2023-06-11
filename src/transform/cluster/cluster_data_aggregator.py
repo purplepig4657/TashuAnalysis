@@ -20,6 +20,7 @@ class ClusterDataAggregator(BaseEstimator, TransformerMixin):
     # noinspection PyMethodMayBeStatic
     def aggregate(self, X: pd.DataFrame) -> pd.DataFrame:
         X[RentDataCN.RENT_COUNT] = X.groupby([
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             self.__hour_column_name,
@@ -27,6 +28,7 @@ class ClusterDataAggregator(BaseEstimator, TransformerMixin):
         ])[ClusterDataCN.CLUSTER].transform('count')
 
         X.drop_duplicates(subset=[
+            TimeDataCN.YEAR,
             TimeDataCN.MONTH,
             TimeDataCN.DAY,
             self.__hour_column_name,
