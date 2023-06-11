@@ -47,6 +47,7 @@ class TimeDataCN:
 
 
 class ClusterDataCN:
+    INDEX = 'index'
     STATION = 'station'
     CLUSTER = 'cluster'
 

@@ -21,6 +21,7 @@ class ClusterColumnRenamer(BaseEstimator, TransformerMixin):
     # noinspection PyMethodMayBeStatic
     def renaming(self, data: pd.DataFrame) -> pd.DataFrame:
         return data.rename(columns={
+            'index': ClusterDataCN.INDEX,
             'station': ClusterDataCN.STATION,
             'cluster': ClusterDataCN.CLUSTER
         })

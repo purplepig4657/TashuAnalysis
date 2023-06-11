@@ -8,7 +8,11 @@ from src.repository.weather_data_loader import WeatherDataLoader
 from src.transform.cluster.cluster_column_renamer import ClusterColumnRenamer
 from src.transform.cluster.cluster_data_aggregator import ClusterDataAggregator
 from src.transform.cluster.cluster_extender import ClusterExtender
+from src.transform.cluster.cluster_index_column_dropper import ClusterIndexColumnDropper
 from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
+from src.transform.common.nighttime_dropper import NighttimeDropper
+from src.transform.common.selected_column_dropper import SelectedColumnDropper
+from src.transform.common.year_column_dropper import YearColumnDropper
 from src.transform.rent.rent_column_renamer import RentColumnRenamer
 from src.transform.rent.rent_concater import RentConcater
 from src.transform.rent.rent_date_aggregator import RentDateAggregator
@@ -26,8 +30,8 @@ from src.transform.weather.weather_string_to_datetime_converter import WeatherSt
 from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
-class RegressionWithCluster(RegressionModelBase):
-    def __init__(self):
+class RegressionWeatherTimeslotCluster(RegressionModelBase):
+    def __init__(self, cluster_data: str = '5'):
         rent_data_loader = RentDataLoader()
         weather_data_loader = WeatherDataLoader()
         cluster_data_loader = ClusterDataLoader()
@@ -35,10 +39,11 @@ class RegressionWithCluster(RegressionModelBase):
         is_categorized = True
 
         cluster_pipline = Pipeline([
-            ('rename', ClusterColumnRenamer())
+            ('rename', ClusterColumnRenamer()),
+            ('index_column_drop', ClusterIndexColumnDropper())
         ])
 
-        processed_cluster_data = cluster_pipline.fit_transform(cluster_data_loader.get_specific_data("5"))
+        processed_cluster_data = cluster_pipline.fit_transform(cluster_data_loader.get_specific_data(cluster_data))
 
         weather_pipline = Pipeline([
             ('data_concatenate', WeatherConcater()),
@@ -62,20 +67,20 @@ class RegressionWithCluster(RegressionModelBase):
             ('aggregator', RentDateAggregator(is_categorized=is_categorized)),
             ('weather_extender', WeatherExtender(preprocessed_data=processed_weather_data, is_categorized=is_categorized)),
             ('cluster_extender', ClusterExtender(cluster_data=processed_cluster_data)),
-            ('cluster_aggregator', ClusterDataAggregator(is_categorized=is_categorized))
+            ('cluster_aggregator', ClusterDataAggregator(is_categorized=is_categorized)),
+            ('year_drop', YearColumnDropper()),
+            ('nighttime_drop', NighttimeDropper()),
+            ('selected_column_drop', SelectedColumnDropper(selected_columns=[WeatherDataCN.RAINFALL]))
         ])
 
         self.__processed_data = rent_pipline.fit_transform(rent_data_loader.all_data)
 
+        # self.__processed_data = self.__processed_data[self.__processed_data[ClusterDataCN.CLUSTER] == 3]
+
         custom_one_hot_encoder = CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
-                                                      TimeDataCN.TIME_CATEGORY, WeatherDataCN.RAINFALL,
-                                                      ClusterDataCN.CLUSTER])
+                                                      TimeDataCN.TIME_CATEGORY, ClusterDataCN.CLUSTER])
 
         self.__processed_data = custom_one_hot_encoder.fit_transform(self.__processed_data)
-
-        # self.__processed_data = self.__processed_data[self.__processed_data[RentDataCN.RENT_STATION] == 133]
-
-        # self.__processed_data.drop([WeatherDataCN.RAINFALL, TimeDataCN.TIME_CATEGORY], axis=1, inplace=True)
 
         self.y = self.__processed_data[RentDataCN.RENT_COUNT]
         self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])

@@ -18,17 +18,18 @@ class ClusterDataLoader(metaclass=SingletonMeta):
         self.__DATA_DIRECTORY = os.path.join(self.__FILE_PATH, "data")
 
         self.__cluster_data_information = {
-            "1": 1,
-            "2": 2,
-            "3": 3,
-            "4": 4,
-            "5": 5
+            "1": "1",
+            "2": "2",
+            "3": "3",
+            "4": "4",
+            "5": "5",
+            "random": "random"
         } if cluster_data_information is None else cluster_data_information
 
         self.__all_cluster_data = self.__load_all_data()
 
-    def __load_data(self, number: int) -> pd.DataFrame:
-        file_name = f"station_clustering_{number}.csv"
+    def __load_data(self, name: str) -> pd.DataFrame:
+        file_name = f"station_clustering_{name}.csv"
         csv_file = os.path.join(self.__DATA_DIRECTORY, file_name)
         data = pd.read_csv(csv_file)
         return data
