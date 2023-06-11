@@ -22,7 +22,7 @@ from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 from src.transform.weather.weather_string_to_datetime_converter import WeatherStringToDatetimeConverter
 
 
-class RegressionWeather(RegressionModelBase):
+class RegressionWeatherWithoutRain(RegressionModelBase):
     def __init__(self):
         rent_data_loader = RentDataLoader()
         weather_data_loader = WeatherDataLoader()
@@ -47,14 +47,13 @@ class RegressionWeather(RegressionModelBase):
             ('aggregator', RentDateAggregator()),
             ('weather_extend', WeatherExtender(preprocessed_data=processed_weather_data)),
             ('year_drop', YearColumnDropper()),
-            # ('selected_column_drop', SelectedColumnDropper(
-            #     selected_columns=[WeatherDataCN.RAINFALL, WeatherDataCN.SUNSHINE_DURATION])),
+            ('selected_column_drop', SelectedColumnDropper(selected_columns=[WeatherDataCN.RAINFALL]))
         ])
 
         self.__processed_data = rent_pipline.fit_transform(rent_data_loader.all_data)
 
         custom_one_hot_encoder = CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
-                                                      TimeDataCN.HOUR, WeatherDataCN.RAINFALL])
+                                                      TimeDataCN.HOUR])
 
         self.__processed_data = custom_one_hot_encoder.fit_transform(self.__processed_data)
 
