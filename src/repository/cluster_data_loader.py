@@ -20,7 +20,9 @@ class ClusterDataLoader(metaclass=SingletonMeta):
         self.__cluster_data_information = {
             "1": 1,
             "2": 2,
-            "3": 3
+            "3": 3,
+            "4": 4,
+            "5": 5
         } if cluster_data_information is None else cluster_data_information
 
         self.__all_cluster_data = self.__load_all_data()
