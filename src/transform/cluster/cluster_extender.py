@@ -9,11 +9,12 @@ class ClusterExtender(BaseEstimator, TransformerMixin):
     Extend weather data column.
     """
 
-    def __init__(self, cluster_data: pd.DataFrame):
+    def __init__(self, cluster_data: pd.DataFrame, drop_rent_station: bool = True):
         if cluster_data is None:
             raise "Required data is none."
 
         self.__cluster_data = cluster_data
+        self.__drop_rent_station = drop_rent_station
 
     def fit(self, X: pd.DataFrame, y=None):
         return self
@@ -27,6 +28,8 @@ class ClusterExtender(BaseEstimator, TransformerMixin):
         }, inplace=True)
 
         data = pd.merge(data, self.__cluster_data, on=RentDataCN.RENT_STATION)
-        data.drop([RentDataCN.RENT_STATION], axis=1, inplace=True)
+
+        if self.__drop_rent_station:
+            data.drop([RentDataCN.RENT_STATION], axis=1, inplace=True)
 
         return data
