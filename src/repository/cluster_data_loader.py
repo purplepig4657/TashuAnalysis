@@ -23,6 +23,7 @@ class ClusterDataLoader(metaclass=SingletonMeta):
             "3": "3",
             "4": "4",
             "5": "5",
+            "6": "6",
             "random": "random"
         } if cluster_data_information is None else cluster_data_information
 
