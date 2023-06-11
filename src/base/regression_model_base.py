@@ -36,6 +36,11 @@ class RegressionModelBase:
         print(f"mse: {self.__result['test_neg_mean_squared_error']}")
         print(f"mae: {self.__result['test_neg_mean_absolute_error']}")
 
+    def print_data_info(self):
+        print(f"columns: {self.X.columns}")
+        print("head")
+        print(self.X.head())
+
     def result(self):
         if not self.__result:
             self.fit()

@@ -22,7 +22,7 @@ class CustomOneHotEncoder(BaseEstimator, TransformerMixin):
         one_hot_encoded_columns = list()
 
         for column in self.__encoding_data:
-            one_hot_encoded_columns.append(pd.get_dummies(X[column]))
+            one_hot_encoded_columns.append(pd.get_dummies(X[column], prefix=column))
 
         X = X.drop(self.__encoding_data, axis=1)
         X = pd.concat([X, *one_hot_encoded_columns], axis=1)
