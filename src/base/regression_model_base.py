@@ -38,7 +38,7 @@ class RegressionModelBase:
 
     def print_data_info(self):
         print(f"columns: {self.X.columns}")
-        print("head")
+        print()
         print(self.X.head())
 
     def result(self):

@@ -4,6 +4,7 @@ from src.base.column_name import RentDataCN, TimeDataCN
 from src.base.regression_model_base import RegressionModelBase
 from src.repository.rent_data_loader import RentDataLoader
 from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
+from src.transform.common.year_column_dropper import YearColumnDropper
 from src.transform.rent.rent_column_renamer import RentColumnRenamer
 from src.transform.rent.rent_concater import RentConcater
 from src.transform.rent.rent_date_aggregator import RentDateAggregator
@@ -22,13 +23,14 @@ class RegressionSimple(RegressionModelBase):
             ('str2datetime', RentStringToDatetimeConverter()),
             ('preprocessing', RentPreprocessor()),
             ('datetime2category', RentDatetimeToCategoryConverter()),
-            ('aggregator', RentDateAggregator())
+            ('aggregator', RentDateAggregator()),
+            ('year_drop', YearColumnDropper())
         ])
 
         self.__processed_data = rent_pipline.fit_transform(rent_data_loader.all_data)
 
-        custom_one_hot_encoder = CustomOneHotEncoder([TimeDataCN.YEAR, TimeDataCN.MONTH, TimeDataCN.DAY,
-                                                      TimeDataCN.WEEKDAY, TimeDataCN.HOUR])
+        custom_one_hot_encoder = CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
+                                                      TimeDataCN.HOUR])
 
         self.__processed_data = custom_one_hot_encoder.fit_transform(self.__processed_data)
 
