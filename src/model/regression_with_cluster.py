@@ -38,7 +38,7 @@ class RegressionWithCluster(RegressionModelBase):
             ('rename', ClusterColumnRenamer())
         ])
 
-        processed_cluster_data = cluster_pipline.fit_transform(cluster_data_loader.get_specific_data("2"))
+        processed_cluster_data = cluster_pipline.fit_transform(cluster_data_loader.get_specific_data("5"))
 
         weather_pipline = Pipeline([
             ('data_concatenate', WeatherConcater()),
@@ -81,4 +81,3 @@ class RegressionWithCluster(RegressionModelBase):
         self.X = self.__processed_data.drop(columns=[RentDataCN.RENT_COUNT])
 
         super().__init__(self.X, self.y)
-
