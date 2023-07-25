@@ -1,9 +1,8 @@
 from sklearn.pipeline import Pipeline
 
-from src.base.column_name import RentDataCN, TimeDataCN, WeatherDataCN, ClusterDataCN, HolidayDataCN
+from src.base.column_name import RentDataCN, TimeDataCN, WeatherDataCN, ClusterDataCN
 from src.base.regression_model_base import RegressionModelBase
 from src.repository.cluster_data_loader import ClusterDataLoader
-from src.repository.holiday_data_loader import HolidayDataLoader
 from src.repository.rent_data_loader import RentDataLoader
 from src.repository.weather_data_loader import WeatherDataLoader
 from src.transform.cluster.cluster_column_renamer import ClusterColumnRenamer
@@ -14,11 +13,6 @@ from src.transform.common.custom_one_hot_encoder import CustomOneHotEncoder
 from src.transform.common.nighttime_dropper import NighttimeDropper
 from src.transform.common.selected_column_dropper import SelectedColumnDropper
 from src.transform.common.year_column_dropper import YearColumnDropper
-from src.transform.holiday.holiday_column_renamer import HolidayColumnRenamer
-from src.transform.holiday.holiday_datetime_filling import HolidayDatetimeFilling
-from src.transform.holiday.holiday_datetime_to_category_converter import HolidayDatetimeToCategoryConverter
-from src.transform.holiday.holiday_extender import HolidayExtender
-from src.transform.holiday.holiday_string_to_datetime_converter import HolidayStringToDatetimeConverter
 from src.transform.rent.rent_column_renamer import RentColumnRenamer
 from src.transform.rent.rent_concater import RentConcater
 from src.transform.rent.rent_date_aggregator import RentDateAggregator
@@ -36,12 +30,11 @@ from src.transform.weather.weather_string_to_datetime_converter import WeatherSt
 from src.transform.weather.weather_preprocessor import WeatherPreprocessor
 
 
-class RegressionWeatherTimeslotCluster(RegressionModelBase):
-    def __init__(self, cluster_data: str = '5'):
+class RegressionWeatherTimeslotClusterNumber(RegressionModelBase):
+    def __init__(self, cluster_data: str = '5', cluster_number: int = 0):
         rent_data_loader = RentDataLoader()
         weather_data_loader = WeatherDataLoader()
         cluster_data_loader = ClusterDataLoader()
-        holiday_loader = HolidayDataLoader()
 
         is_categorized = True
 
@@ -64,15 +57,6 @@ class RegressionWeatherTimeslotCluster(RegressionModelBase):
 
         processed_weather_data = weather_pipline.fit_transform(weather_data_loader.all_data)
 
-        holiday_pipline = Pipeline([
-            ('rename', HolidayColumnRenamer()),
-            ('str2datetime', HolidayStringToDatetimeConverter()),
-            ('preprocessing', HolidayDatetimeFilling()),
-            ('datetime2category', HolidayDatetimeToCategoryConverter())
-        ])
-
-        processed_holiday_data = holiday_pipline.fit_transform(holiday_loader.all_data['basic'])
-
         rent_pipline = Pipeline([
             ('data_concatenate', RentConcater()),
             ('rename', RentColumnRenamer()),
@@ -83,7 +67,6 @@ class RegressionWeatherTimeslotCluster(RegressionModelBase):
             ('aggregator', RentDateAggregator(is_categorized=is_categorized)),
             ('weather_extender', WeatherExtender(preprocessed_data=processed_weather_data, is_categorized=is_categorized)),
             ('cluster_extender', ClusterExtender(cluster_data=processed_cluster_data)),
-            ('holiday_extender', HolidayExtender(preprocessed_data=processed_holiday_data)),
             ('cluster_aggregator', ClusterDataAggregator(is_categorized=is_categorized)),
             ('year_drop', YearColumnDropper()),
             ('nighttime_drop', NighttimeDropper()),
@@ -92,12 +75,10 @@ class RegressionWeatherTimeslotCluster(RegressionModelBase):
 
         self.__processed_data = rent_pipline.fit_transform(rent_data_loader.all_data)
 
-        # self.__processed_data = self.__processed_data[self.__processed_data[ClusterDataCN.CLUSTER] == 3]
-        # self.__processed_data = self.__processed_data[self.__processed_data[RentDataCN.RENT_STATION] == 100]
+        self.__processed_data = self.__processed_data[self.__processed_data[ClusterDataCN.CLUSTER] == cluster_number]
 
         custom_one_hot_encoder = CustomOneHotEncoder([TimeDataCN.MONTH, TimeDataCN.DAY, TimeDataCN.WEEKDAY,
-                                                      TimeDataCN.TIME_CATEGORY, ClusterDataCN.CLUSTER,
-                                                      HolidayDataCN.IS_HOLIDAY])
+                                                      TimeDataCN.TIME_CATEGORY])
 
         self.__processed_data = custom_one_hot_encoder.fit_transform(self.__processed_data)
 

@@ -52,6 +52,11 @@ class ClusterDataCN:
     CLUSTER = 'cluster'
 
 
+class HolidayDataCN:
+    IS_HOLIDAY = 'is_holiday'
+    DATE = 'date'
+
+
 class TimeDataValue:
     MORNING_PEAK = 'morning_peak'
     MORNING_NON_PEAK = 'morning_non_peak'
